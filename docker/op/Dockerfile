@@ -12,7 +12,10 @@ ENV SUBDIR ${SRCDIR}/${INSTDIR}
 
 WORKDIR ${SRCDIR}
 
+ENV VERSION_NODE_OP   tags/v1.15.12
+
 RUN git clone https://github.com/panva/node-oidc-provider.git
+RUN cd node-oidc-provider && git checkout ${VERSION_NODE_OP} && cd -
 RUN cd ${INSTDIR} && npm install && cd -
 
 COPY docker/op/apache-ssl.conf /etc/apache2/sites-available/ssl.conf
