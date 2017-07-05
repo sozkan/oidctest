@@ -16,7 +16,7 @@ ENV VERSION_OTEST   tags/v0.7.0
 ENV VERSION_FEDOIDC tags/0.4.0
 
 RUN git clone https://github.com/openid-certification/otest.git
-RUN cd fedoidc && git checkout ${VERSION_OTEST} && cd -
+RUN cd otest && git checkout ${VERSION_OTEST} && cd -
 RUN cd otest && python3 setup.py install && cd -
 
 RUN git clone https://github.com/OpenIDC/fedoidc.git

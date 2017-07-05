@@ -28,7 +28,7 @@ RUN cd pyoidc &&  python3 setup.py install
 #
 
 RUN git clone https://github.com/openid-certification/otest.git
-RUN cd fedoidc && git checkout ${VERSION_OTEST} && cd -
+RUN cd otest && git checkout ${VERSION_OTEST} && cd -
 RUN cd otest && python3 setup.py install && cd -
 
 RUN git clone https://github.com/OpenIDC/fedoidc.git
