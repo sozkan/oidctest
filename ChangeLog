@@ -1,5 +1,9 @@
 07/11/2017
-- fix new port assignments when assigned_ports.json is off
+- fix display of URL-unsafe tags; see openid-certification/oidctest#35
+- release OP 2.0.2
+
+07/11/2017
+- fix new port assignments when assigned_ports.json is off; see openid-certification/oidctest#35
 - use version 2.0.0 of node-oidc-provider for Docker OP
 - release OP 2.0.1
 
