@@ -1,0 +1,7 @@
+07/11/2017
+- fix new port assignments when assigned_ports.json is off
+- use version 2.0.0 of node-oidc-provider for Docker OP
+- release OP 2.0.1
+
+07/05/2017
+- release RP 1.0.0 and OP 2.0.0
