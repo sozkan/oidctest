@@ -1,3 +1,7 @@
+07/14/2017
+- add robots.txt and fix docker-compose on Windows by adding .gitattributes; see openid-certification/oidctest#/37
+- release OP 2.0.3 and RP 1.0.1
+
 07/11/2017
 - fix display of URL-unsafe tags; see openid-certification/oidctest#35
 - release OP 2.0.2
