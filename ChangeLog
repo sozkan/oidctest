@@ -1,3 +1,10 @@
+07/31/2017
+- OP: more flexibility for the OP-Req-login_hint test; addresses openid-certification/oidctest#41
+- OP: avoid ERROR in logs for OP-Req-NotUnderstood; addresses openid-certification/oidctest#42
+- RP: don't gzip tarred log files; addresses openid-certification/oidctest#43
+- update maintenance.md to production release setup
+- release OP 2.0.6 and RP 1.0.4
+
 07/14/2017
 - fix unit tests
 - release OP 2.0.5 and RP 1.0.3
