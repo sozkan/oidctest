@@ -1071,6 +1071,8 @@ class MultipleSignOn(Error):
         # verify that it is in fact two separate authentications
         try:
             assert idt[0]["auth_time"] != idt[1]["auth_time"]
+        except KeyError:
+            self._message = "No \"auth_time\" found in both ID tokens so it cannot be compared"
         except AssertionError:
             self._message = "Not two separate authentications!"
             try:
@@ -1367,7 +1369,9 @@ class CheckEncryptedUserInfo(Error):
         jwt = get_protocol_response(conv, OpenIDSchema)[0]
         try:
             assert jwt.jwe_header["alg"].startswith("RSA")
-        except AssertionError:
+        except KeyError: # No jwe_header or no 'alg' in header
+            self._status = self.status
+        except AssertionError:  # No RSA crypto used
             self._status = self.status
 
         return {}

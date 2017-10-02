@@ -12,7 +12,7 @@ ENV SUBDIR ${SRCDIR}/${INSTDIR}/oidc_cp_rplib
 
 WORKDIR ${SRCDIR}
 
-ENV VERSION_OTEST   tags/v0.7.0
+ENV VERSION_OTEST   tags/v0.7.2
 ENV VERSION_FEDOIDC tags/0.4.0
 
 RUN git clone https://github.com/openid-certification/otest.git

@@ -1,3 +1,9 @@
+10/02/2017
+- use pyoidc 0.12.0 (still with a patch)
+- OP: address #51, #50, #46, #40
+- RP: address #44
+- release OP 2.0.7 and RP 1.0.5
+
 07/31/2017
 - OP: more flexibility for the OP-Req-login_hint test; addresses openid-certification/oidctest#41
 - OP: avoid ERROR in logs for OP-Req-NotUnderstood; addresses openid-certification/oidctest#42
