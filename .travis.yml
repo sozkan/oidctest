@@ -42,7 +42,7 @@ install:
   - cd $TRAVIS_BUILD_DIR/..
   - git clone https://github.com/openid-certification/openid-client-conformance-tests.git
   - cd openid-client-conformance-tests
-  - git checkout tags/v1.0.1
+  - git checkout tags/v1.0.2
   - npm install --production
 
 before_script:  

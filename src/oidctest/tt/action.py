@@ -171,7 +171,7 @@ def update_config(conf, tool_params):
     state = {
         'tool': {'immutable': ['issuer', 'tag', 'register', 'discover',
                                'webfinger'],
-                 'required': ['return_type']}}
+                 'required': ['return_type', 'contact_email']}}
 
     notes = ''
     if _spec['webfinger']:
@@ -271,14 +271,10 @@ class Action(object):
 
         return as_bytes(_msg)
 
-    @cherrypy.expose
-    def stop(self, iss, tag, ev):
-        logger.info('stop test tool: {} {}'.format(iss, tag))
-
+    def kill(self, iss, tag, ev):
         uqp, qp = unquote_quote(iss, tag)
         _key = self.app.assigned_ports.make_key(*uqp)
-
-        # If already running - kill
+        
         try:
             pid = isrunning(unquote_plus(iss), unquote_plus(tag))
         except KeyError:
@@ -292,6 +288,15 @@ class Action(object):
                     del self.app.running_processes[_key]
                 except KeyError:
                     pass
+        
+    @cherrypy.expose
+    def stop(self, iss, tag, ev):
+        logger.info('stop test tool: {} {}'.format(iss, tag))
+
+        # If already running - kill
+        self.kill(iss, tag, ev)
+        
+        uqp, qp = unquote_quote(iss, tag)
 
         # redirect back to entity page
         loc = '{}entity/{}'.format(self.rest.base_url, qp[0])
@@ -300,12 +305,12 @@ class Action(object):
     @cherrypy.expose
     def delete(self, iss, tag, ev, pid=0):
         logger.info('delete test tool configuration: {} {}'.format(iss, tag))
+        
+        # If already running - kill
+        self.kill(iss, tag, ev)
+        
         uqp, qp = unquote_quote(iss, tag)
         _key = self.app.assigned_ports.make_key(*uqp)
-
-        if pid:
-            kill_process(pid)
-            del self.app.running_processes[_key]
 
         os.unlink(os.path.join(self.entpath, *qp))
         # Remove issuer if out of tags
@@ -318,7 +323,7 @@ class Action(object):
             pass
 
         # redirect back to entity page
-        loc = '{}entity/{}'.format(self.rest.base_url, qp[0])
+        loc = '{}entity'.format(self.rest.base_url)
         raise cherrypy.HTTPRedirect(loc)
 
     @cherrypy.expose
@@ -355,6 +360,13 @@ class Action(object):
         logger.info(
             'create test tool configuration: {} {}'.format(kwargs['iss'],
                                                            kwargs['tag']))
+        
+        uqp, qp = unquote_quote(kwargs['iss'], kwargs['tag'])
+        if not uqp[0].startswith('https://') and not uqp[0].startswith('http://'):
+            err = 'issuer value must start with "https://" or "http://"'
+            logger.error(err)
+            return as_bytes('Sorry failed to create: {}'.format(err))
+        
         # construct profile
         try:
             profile = to_profile(kwargs)
@@ -378,7 +390,6 @@ class Action(object):
             _ent_conf['client']['registration_response'][
                 'redirect_uris'] = '{}:{}/authz_cb'.format(_base, _port)
 
-        uqp, qp = unquote_quote(kwargs['iss'], kwargs['tag'])
         _ent_conf['tool']['issuer'] = uqp[0]
         _ent_conf['tool']['tag'] = uqp[1]
         _ent_conf['tool']['profile'] = profile

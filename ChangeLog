@@ -1,3 +1,8 @@
+10/18/2017
+- OP: address #53, #56, #57, #26
+- RP: address #26
+- release OP 2.0.8 and RP 1.0.6
+
 10/02/2017
 - use pyoidc 0.12.0 (still with a patch)
 - OP: address #51, #50, #46, #40
