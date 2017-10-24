@@ -19,7 +19,7 @@ ENV VERSION_PYOIDC  tags/v0.12.0
 # TEMPORARY
 #
 RUN git clone https://github.com/OpenIDC/pyoidc.git
-RUN cd pyoidc && git checkout ${VERSION_PYOIDC} -b temp-patch
+RUN cd pyoidc && git fetch origin && git checkout ${VERSION_PYOIDC} -b temp-patch
 COPY docker/op_test/pyoidc.patch pyoidc.patch
 RUN cd pyoidc && patch -p1 < ../pyoidc.patch
 RUN cd pyoidc &&  python3 setup.py install
