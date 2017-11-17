@@ -1,3 +1,10 @@
+11/17/2017
+- RP: add 3rd-party-init-SSO test and add new category "3rd-Party Init SSO"
+- OP: make form_post part of "extra" tests
+- use fedoidc release 0.5.0
+- update client and provider conformance test tools to 1.0.3 and 2.0.4 respectively
+- release OP 2.0.9 and RP 1.0.7
+
 10/18/2017
 - OP: address #53, #56, #57, #26
 - RP: address #26
