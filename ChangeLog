@@ -1,3 +1,8 @@
+11/22/2017
+- OP: make OP-Token-refresh part of "extra" tests; address #66
+- OP: set signature algo for OP-request_uri-Unsigned to "none"; address #67
+- release OP 2.0.10
+
 11/17/2017
 - RP: add 3rd-party-init-SSO test and add new category "3rd-Party Init SSO"
 - OP: make form_post part of "extra" tests
