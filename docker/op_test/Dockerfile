@@ -12,16 +12,15 @@ ENV SUBDIR ${SRCDIR}/${INSTDIR}/oidc_op
 
 WORKDIR ${SRCDIR}
 
-ENV VERSION_OTEST   tags/v0.7.2
+ENV VERSION_OTEST   tags/v0.7.3
 ENV VERSION_FEDOIDC tags/0.5.0
-ENV VERSION_PYOIDC  tags/v0.12.0
+#ENV VERSION_PYOIDC  tags/v0.12.0
+ENV PYOIDC_VERSION=5a958a13eb9c5a3606818af4d23441f111f227b1
 #
 # TEMPORARY
 #
 RUN git clone https://github.com/OpenIDC/pyoidc.git
-RUN cd pyoidc && git fetch origin && git checkout ${VERSION_PYOIDC} -b temp-patch
-COPY docker/op_test/pyoidc.patch pyoidc.patch
-RUN cd pyoidc && patch -p1 < ../pyoidc.patch
+RUN cd pyoidc && git fetch origin && git checkout ${PYOIDC_VERSION} -b temp
 RUN cd pyoidc &&  python3 setup.py install
 #
 # TEMPORARY

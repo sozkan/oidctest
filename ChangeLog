@@ -1,3 +1,16 @@
+01/22/2018
+- OP: support for form_post profile checkbox; openid-certification/oidctest#76
+- OP: allow endpoints to have query parts; openid-certification/oidctest#74
+- OP: audience is endpoint dependent; see openid-certification/oidctest#21
+- OP: verify that RS256 is in id_token_signing_alg_values_supported; openid-certification/oidctest#71
+- OP: avoid sending null values in dynamic client registration; openid-certification/oidctest#83
+- OP: show at_hash verification error in certification log; openid-certification/oidctest#65
+- OP: return RegistrationError on missing required attribute; openid-certification/oidctest#70
+- OP: log the registration request; openid-certification/oidctest#38
+- OP: depend on unreleased pyoidc commit for various fixes
+- depend on otest 0.7.3, update copyright year
+- release OP 2.0.11 and RP 1.0.8
+
 11/22/2017
 - OP: make OP-Token-refresh part of "extra" tests; address #66
 - OP: set signature algo for OP-request_uri-Unsigned to "none"; address #67

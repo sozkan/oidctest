@@ -30,8 +30,21 @@ def handle_error():
     ]
 
 
+def status_code(status):
+    return int(status.split(' ')[0])
+
+
+def set_content_type(resp, content_type):
+    if ('Content-type', content_type) in resp.headers:
+        return
+
+    _headers = [h for h in resp.headers if h[0] != 'Content-type']
+    _headers.append(('Content-type', content_type))
+    resp,_headers = _headers
+
+
 def conv_response(op, resp):
-    _stat = int(resp.status.split(' ')[0])
+    _stat = status_code(resp.status)
     #  if self.mako_lookup and self.mako_template:
     #    argv["message"] = message
     #    mte = self.mako_lookup.get_template(self.mako_template)
@@ -140,7 +153,9 @@ class WebFinger(object):
         ev.store(EV_RESPONSE,
                  Operation('Webfinger', href=href, subj=resource, dummy=dummy))
         write_events(ev, op_id, test_id)
-        return self.srv.response(subj, href, dummy=dummy)
+        resp = self.srv.response(subj, href, dummy=dummy)
+        cherrypy.response.headers['Content-Type'] = 'application/jrd+json'
+        return as_bytes(resp)
 
 
 class Configuration(object):
@@ -159,8 +174,8 @@ class Configuration(object):
         else:
             store_request(op, 'ProviderInfo')
             resp = op.providerinfo_endpoint()
-            # cherrypy.response.headers['Content-Type'] = 'application/json'
-            # return as_bytes(resp.message)
+            if status_code(resp.status) < 300:
+                set_content_type(resp, 'application/json')
             return conv_response(op, resp)
 
 
@@ -184,6 +199,8 @@ class Registration(object):
                                          'Missing Client registration body')
             logger.debug('request_body: {}'.format(_request))
             resp = op.registration_endpoint(as_unicode(_request))
+            if status_code(resp.status) < 300:
+                set_content_type(resp, 'application/json')
             return conv_response(op, resp)
 
 
@@ -225,6 +242,8 @@ class Token(object):
                 authn = None
             logger.debug('Authorization: {}'.format(authn))
             resp = op.token_endpoint(as_unicode(kwargs), authn, 'dict')
+            if status_code(resp.status) < 300:
+                set_content_type(resp, 'application/json')
             return conv_response(op, resp)
 
 
@@ -253,6 +272,8 @@ class UserInfo(object):
 
             #kwargs.update(args)
             resp = op.userinfo_endpoint(**args)
+            if status_code(resp.status) < 300:
+                set_content_type(resp, 'application/json')
             return conv_response(op, resp)
 
 
@@ -335,7 +356,7 @@ HTML_FOOTER = """
             <hr />
             <div class="pull-left">
                 <ul class="list-inline">
-                    <li>(C) 2017 - <a href="https://openid.net/foundation">OpenID
+                    <li>(C) 2017-2018 - <a href="https://openid.net/foundation">OpenID
                             Foundation</a></li>
                     <li>E-mail: <a href="mailto:certification@oidf.org">certification@oidf.org</a></li>
                     <li>Issues: <a

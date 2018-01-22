@@ -37,12 +37,12 @@ install:
   - cd $TRAVIS_BUILD_DIR/..
   - git clone https://github.com/openid-certification/oidc-provider-conformance-tests.git
   - cd oidc-provider-conformance-tests
-  - git checkout tags/v2.0.4
+  - git checkout tags/v2.0.5
   - npm install --production
   - cd $TRAVIS_BUILD_DIR/..
   - git clone https://github.com/openid-certification/openid-client-conformance-tests.git
   - cd openid-client-conformance-tests
-  - git checkout tags/v1.0.3
+  - git checkout tags/v1.0.4
   - npm install --production
 
 before_script:  

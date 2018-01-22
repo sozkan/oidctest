@@ -5,6 +5,7 @@ import tarfile
 import time
 
 import cherrypy
+from otest.result import safe_url
 
 PRE_HTML = """
 <!DOCTYPE html>
@@ -51,7 +52,7 @@ POST_HTML = """
             <hr />
             <div class="pull-left">
                 <ul class="list-inline">
-                    <li>(C) 2017 - <a href="https://openid.net/foundation">OpenID
+                    <li>(C) 2017-2018 - <a href="https://openid.net/foundation">OpenID
                             Foundation</a></li>
                     <li>E-mail: <a href="mailto:certification@oidf.org">certification@oidf.org</a></li>
                     <li>Issues: <a
@@ -213,10 +214,12 @@ class Log(object):
 
 
 class OPLog(object):
-    def __init__(self, root, pre_html, version):
+    def __init__(self, root, pre_html, version, iss='', tag=''):
         self.root = root
         self.pre_html = pre_html
         self.version = version
+        self.iss = safe_url(iss)
+        self.tag = tag
 
     @cherrypy.expose
     def index(self, op_id='', tag='', profile='', test_id=''):
@@ -232,7 +235,12 @@ class OPLog(object):
         elif op_id:
             path = os.path.join(self.root, op_id)
         else:
-            path = self.root
+            if self.iss and self.tag:
+                path = os.path.join(self.root, self.iss, self.tag)
+                prefix = '{}/{}/'.format(self.iss, self.tag)
+            else:
+                path = self.root
+                prefix = ''
 
         if os.path.isfile(path):
             cherrypy.response.headers['Content-Type'] = 'text/plain'
@@ -278,10 +286,12 @@ class OPLog(object):
                 )
 
             return response
+        else:
+            raise cherrypy.HTTPError(400, 'Could not find what you asked for')
 
     def _cp_dispatch(self, vpath):
         if vpath:
-            cherrypy.request.params['op_id'] = vpath.pop(0)
+            cherrypy.request.params['op_id'] = vpath.pop(0)  # Test ID
         if vpath:
             cherrypy.request.params['tag'] = vpath.pop(0)  # Test ID
         if vpath:
