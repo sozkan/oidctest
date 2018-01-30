@@ -1,3 +1,8 @@
+01/30/2018
+- OP: update pyoidc dependency: see openid-certification/oidctest#61
+      don't include client_id parameter with access token request that uses basic auth
+- release OP 2.0.12
+
 01/22/2018
 - OP: support for form_post profile checkbox; openid-certification/oidctest#76
 - OP: allow endpoints to have query parts; openid-certification/oidctest#74
