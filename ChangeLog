@@ -1,3 +1,8 @@
+02/08/2018
+- OP: handle break in conditions; see openid-certification/oidctest#77
+- RP: fix user info endpoint content type setting; see openid-certification/oidctest#78
+- release OP 2.0.13 and RP 1.0.9
+
 01/30/2018
 - OP: update pyoidc dependency: see openid-certification/oidctest#61
       don't include client_id parameter with access token request that uses basic auth
