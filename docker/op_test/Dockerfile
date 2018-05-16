@@ -14,17 +14,6 @@ WORKDIR ${SRCDIR}
 
 ENV VERSION_OTEST   tags/v0.7.4
 ENV VERSION_FEDOIDC tags/0.5.0
-#ENV VERSION_PYOIDC  tags/v0.12.0
-ENV PYOIDC_VERSION=78ab48a4d0a5009075c25f3d721b618a7e2dd2d5
-#
-# TEMPORARY
-#
-RUN git clone https://github.com/OpenIDC/pyoidc.git
-RUN cd pyoidc && git fetch origin && git checkout ${PYOIDC_VERSION} -b temp
-RUN cd pyoidc &&  python3 setup.py install
-#
-# TEMPORARY
-#
 
 RUN git clone https://github.com/openid-certification/otest.git
 RUN cd otest && git fetch origin && git checkout ${VERSION_OTEST} && cd -

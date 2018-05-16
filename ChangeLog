@@ -1,3 +1,20 @@
+05/16/2018
+- depend on stock pyoidc 0.14.0 (no patches required anymore)
+- OP: docker testing uses panva/node-openid-provider version 3.0.1 now
+- OP: use form-encoded client_secret_basic format; openid-certification/oidctest#88
+- OP  remove `_claim_*` keys from userinfo in `fetch_distributed_claims`; openid-certification/oidctest#81
+- OP: grant_types should follow response_types in client registration request; openid-certification/oidctest#68
+- OP: skip keys that are not properly defined; openid-certification/oidctest#54
+- OP: disable verification of JWT from distributed claims; openid-certification/oidctest#51
+- OP: remove PyOIDC patch; openid-certification/oidctest#21
+- OP: OP-request_uri-Support: set explicity encryption params; https://github.com/openid-certification/oidctest/commit/609319f8fd7a117d67c0e1868b3f1828cc91a68e
+- OP: OP-Token-refresh: remove "implicit" from registered grant_types
+- OP: update to provider conformance tests 2.0.7
+- RP: use form-encoded client_secret_basic format; openid-certification/oidctest#88
+- RP: depend on otest 0.7.4
+- RP: update to client conformance tests 1.0.6
+- release OP 2.0.14 and RP 1.0.10
+
 02/08/2018
 - OP: handle break in conditions; see openid-certification/oidctest#77
 - RP: fix user info endpoint content type setting; see openid-certification/oidctest#78
