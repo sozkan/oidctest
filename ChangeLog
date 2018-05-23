@@ -1,3 +1,10 @@
+05/23/2018
+- RP: fix broken RP testing by removing remaining references to response.status; https://github.com/openid-certification/oidctest/commit/5fb3a5403dbd118fa0b857e2e4c537b1e2ac60ce
+- OP: pass verify parameter to from_jwt in overridden do_user_info_request; openid-certification/oidctest#51 and https://github.com/openid-certification/oidctest/issues/51#issuecomment-390211827
+- remove dependency on fedoidc; openid-certification/oidctest#90
+- update docker-compose to version 3
+- release OP 2.0.15 and RP 1.0.11
+
 05/16/2018
 - depend on stock pyoidc 0.14.0 (no patches required anymore)
 - OP: docker testing uses panva/node-openid-provider version 3.0.1 now
