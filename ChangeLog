@@ -1,4 +1,10 @@
 06/20/2018
+- OP: refactored response_mode error handling
+- OP: update Travis CI OP to node-openid-provider version 4.0.3
+- OP: add release management documentation to maintenance.md doc
+- release OP 2.1.2
+
+06/20/2018
 - OP: verify that the response was of the correct mode; openid-certification/oidctest#???
 - OP: split out Response Type and Response Mode categories
 - OP: add OP-Error-form_post test; openid-certification/oidctest#101
