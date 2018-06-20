@@ -1,9 +1,22 @@
+06/20/2018
+- OP: verify that the response was of the correct mode; openid-certification/oidctest#???
+- OP: split out Response Type and Response Mode categories
+- OP: add OP-Error-form_post test; openid-certification/oidctest#101
+- OP: capture unhandled exceptions and show a stack trace to tester
+- OP: add OP-Rotation-OP-Sig to "register" profile instead of "discover"; openid-certification/oidctest#102
+- OP: correct OAuth behavior test descriptions; openid-certification/oidctest#99
+- OP: make form_post response mode available to the "code" response type as well; openid-certification/oidctest#100
+- OP: add config entry info in tooltips; openid-certification/oidctest#75
+- OP: require supporting request_uri in OP-request_uri-Sig.json
+- OP: don't require request_object_signing_alg_values_supported in OP-request_uri-Unsigned.json
+- release OP 2.1.1 and RP 1.1.1
+
 05/23/2018
 - RP: fix broken RP testing by removing remaining references to response.status; https://github.com/openid-certification/oidctest/commit/5fb3a5403dbd118fa0b857e2e4c537b1e2ac60ce
 - OP: pass verify parameter to from_jwt in overridden do_user_info_request; openid-certification/oidctest#51 and https://github.com/openid-certification/oidctest/issues/51#issuecomment-390211827
 - remove dependency on fedoidc; openid-certification/oidctest#90
 - update docker-compose to version 3
-- release OP 2.0.15 and RP 1.0.11
+- release OP 2.1.0 and RP 1.1.0
 
 05/16/2018
 - depend on stock pyoidc 0.14.0 (no patches required anymore)
