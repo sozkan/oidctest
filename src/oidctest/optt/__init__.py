@@ -1,16 +1,12 @@
-import cherrypy
 import logging
 
+import cherrypy
 from cherrypy import CherryPyException
 from cherrypy import HTTPRedirect
 from jwkest import as_bytes
 from otest import Break
 from otest import exception_trace
 from otest.check import CRITICAL
-from otest.check import ERROR
-from otest.check import OK
-from otest.check import State
-from otest.events import EV_CONDITION
 from otest.events import EV_EXCEPTION
 from otest.events import EV_FAULT
 from otest.events import EV_HTTP_ARGS
@@ -108,12 +104,9 @@ class Main(object):
         except HTTPRedirect:
             raise
         except Exception as err:
-            test_id = list(self.flows.complete.keys())[0]
-            self.tester.conv.events.store(
-                EV_CONDITION,
-                State(test_id=test_id, status=ERROR, message=err,
-                      context='run'))
+            #test_id = list(self.flows.complete.keys())[0]
             _trace = exception_trace('run', err, logger)
+            self.tester.conv.events.store(EV_FAULT, _trace)
             return self.display_exception(exception_trace=_trace)
 
         self.sh['session_info'] = self.info.session
@@ -174,9 +167,6 @@ class Main(object):
         return as_bytes(self.info.flow_list())
 
     def opresult(self):
-        # _url = "{}display#{}".format(self.webenv['base_url'],
-        #                              self.pick_grp(self.sh['conv'].test_id))
-        # cherrypy.HTTPRedirect(_url)
         try:
             #  return info.flow_list()
             _url = "{}display#{}".format(
@@ -189,12 +179,10 @@ class Main(object):
             raise CherryPyException(err)
 
     def process_error(self, msg, context):
-        test_id = list(self.flows.complete.keys())[0]
-        self.tester.conv.events.store(
-            EV_CONDITION,
-            State(test_id=test_id, status=ERROR, message=msg,
-                  context=context))
-        self.tester.conv.events.store(EV_CONDITION, State('Done', status=OK))
+        # test_id = list(self.flows.complete.keys())[0]
+        self.tester.conv.events.store(EV_RESPONSE, msg)
+        self.tester.conv.events.store(EV_FAULT, 'Error in {}'.format(context))
+        # self.tester.conv.events.store(EV_CONDITION, State('Done', status=OK))
         res = Result(self.sh, self.flows.profile_handler)
         self.tester.store_result(res)
         logger.error('Encountered: {} in "{}"'.format(msg, context))
@@ -206,7 +194,8 @@ class Main(object):
         if cherrypy.request.method != 'GET':
             # You should only get query/fragment here using GET
             return self.process_error(
-                'Wrong HTTP method used expected GET got "{}"'.format(
+                'Wrong HTTP method used expected GET got "{}". Could be that '
+                'I got a form_post to the wrong redirect_uri'.format(
                     cherrypy.request.method), 'authz_cb')
 
         _conv = self.sh["conv"]
@@ -229,6 +218,11 @@ class Main(object):
 
             return self.info.opresult_fragment()
 
+        if kwargs == {}:  # This should never be the case
+            return self.process_error(
+                'Got empty response could be I got something fragment '
+                'encoded. Expected query response mode', 'authz_cb')
+
         _conv.events.store(EV_RESPONSE, 'Response URL with query part')
 
         try:
@@ -240,9 +234,9 @@ class Main(object):
             resp = False
             self.tester.store_result()
         except Exception as err:
-            _conv.events.store(EV_FAULT, err)
-            self.tester.store_result()
             _trace = exception_trace('authz_cb', err, logger)
+            _conv.events.store(EV_FAULT, _trace)
+            self.tester.store_result()
             return self.display_exception(exception_trace=_trace)
 
         if resp is False or resp is True:
