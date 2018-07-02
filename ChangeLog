@@ -3,6 +3,7 @@
 - OP: fix redirect_uri rendering in configuration page for new instances
 - OP/RP: fix the problem with displaying a Message instance; see: openid-certification/oidctest#114
 - release OP 2.1.4 and RP 1.1.3
+- fix unit tests
 
 06/22/2018
 - OP: add redirect_uri instructions to form_post UI options; openid-certification/oidctest#112
