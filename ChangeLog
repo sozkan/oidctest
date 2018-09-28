@@ -1,3 +1,10 @@
+09/28/2018
+- OP: complete configuration help tooltips; see openid-certification/oidctest#75
+- OP: Added subject_type=pairwise to solve issue openid-certification/oidctest#122
+- RP: add rp-response_mode-form_post-error test; see openid-certification/oidctest#119
+- chore: switch Docker OS versions to Ubuntu Bionic 18.04 LTS
+- release OP 2.1.5 and RP 1.1.4
+
 07/02/2018
 - OP: make "sig" support default to true in new OP instances; see: openid-certification/oidctest#115
 - OP: fix redirect_uri rendering in configuration page for new instances
