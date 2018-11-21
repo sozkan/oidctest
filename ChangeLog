@@ -1,3 +1,22 @@
+11/21/2018
+- OP: add OP-3rd_party-init-login and OP-3rd_party-init-login-nohttps; closes #129
+- OP: fix error handling when c_hash is missing in Implicit/Hybrid flows; closes #124
+- OP: add OP-IDToken-anyalg test
+  allow the ID token to be signed by whatever the provider chooses
+- OP: add OP-UserInfo-sig-any, OP-request-Sig-any and OP-request_uri-Sig-any tests
+  support OP influencing choice of sign algorithm
+- OP: improve error banner text and display JWx headers
+- OP: more about doing crypto algorithm choice dynamically
+- RP: improve rp-response_mode-form_post-error; closes #132
+  - improve the test description on how to trigger an error
+  - allow for authentication requests that don't have a state parameter
+- replace underscores with hyphens in hostnames
+  underscores aren't RFC-legal characters in hostnames, so using them can cause client validation issues
+- add subjectAltName to generated certs for Docker environment; thanks @dannysauer
+- remove separate FAPI and OIDC tests directories
+- updated/improved release management doc to version 2.1.0
+- release OP 2.1.6 and RP 1.1.5
+
 09/28/2018
 - OP: complete configuration help tooltips; see openid-certification/oidctest#75
 - OP: Added subject_type=pairwise to solve issue openid-certification/oidctest#122

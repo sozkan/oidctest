@@ -17,8 +17,11 @@ from oidctest.tt import conv_response
 
 logger = logging.getLogger(__name__)
 
-BANNER = "Something went seriously wrong, please tell us at " \
-         "certification@oidf.org"
+BANNER = """
+Something went wrong! If you know or suspect you know why, then try to
+fix it. If you have no idea, then please tell us at certification@oidf.org
+and we will help you figure it out.
+"""
 
 
 def expected_response_mode(conv):

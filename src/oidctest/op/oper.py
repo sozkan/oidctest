@@ -9,14 +9,17 @@ import sys
 import time
 
 from Cryptodome.PublicKey import RSA
+
 from jwkest.jwk import RSAKey
+
 from oic import rndstr
 from oic.exception import IssuerMismatch
 from oic.exception import ParameterError
 from oic.oauth2 import ErrorResponse
 from oic.oauth2 import Message
 from oic.oauth2.util import JSON_ENCODED
-from oic.oic import ProviderConfigurationResponse, OpenIDSchema
+from oic.oic import OpenIDSchema
+from oic.oic import ProviderConfigurationResponse
 from oic.oic import RegistrationResponse
 from oic.utils.keyio import KeyBundle
 from oic.utils.keyio import dump_jwks
@@ -25,6 +28,7 @@ from oic.utils.keyio import rsa_init
 from otest import RequirementsNotMet
 from otest import Unknown
 from otest.aus.operation import Operation
+from otest.aus.request import display_jwx_headers
 from otest.aus.request import AsyncGetRequest
 from otest.aus.request import SyncGetRequest
 from otest.aus.request import SyncPostRequest
@@ -105,8 +109,7 @@ class Discovery(Operation):
         else:
             self.conv.events.store(EV_NOOP, "Dynamic discovery")
             self.conv.entity.provider_info = ProviderConfigurationResponse(
-                **self.conv.entity_config["provider_info"]
-            )
+                **self.conv.entity_config["provider_info"])
 
     def op_setup(self):
         # if self.dynamic:
@@ -223,14 +226,21 @@ class AccessToken(SyncPostRequest):
             return atr
 
         try:
-            _jws_alg = atr["id_token"].jws_header["alg"]
+            msg = atr['id_token']
+        except KeyError:
+            pass
+        else:
+            display_jwx_headers(msg, self.conv)
+
+        try:
+            _jws_alg = atr["id_token"].jws_header['alg']
         except (KeyError, AttributeError):
             pass
         else:
             if _jws_alg == "none":
                 pass
             elif "kid" not in atr[
-                "id_token"].jws_header and not _jws_alg == "HS256":
+                    "id_token"].jws_header and _jws_alg != "HS256":
                 keys = self.conv.entity.keyjar.keys_by_alg_and_usage(
                     self.conv.info["issuer"], _jws_alg, "ver")
                 if len(keys) > 1:
@@ -267,7 +277,7 @@ class RefreshToken(SyncPostRequest):
             except KeyError:
                 for am in _ent.client_authn_method.keys():
                     if am in _ent.provider_info[
-                        'token_endpoint_auth_methods_supported']:
+                            'token_endpoint_auth_methods_supported']:
                         self.op_args['authn_method'] = am
                         break
 
@@ -279,6 +289,13 @@ class RefreshToken(SyncPostRequest):
         atr = self.catch_exception_and_error(
             self.conv.entity.do_access_token_refresh,
             request_args=self.req_args, **self.op_args)
+
+        try:
+            msg = atr['id_token']
+        except KeyError:
+            pass
+        else:
+            display_jwx_headers(msg, self.conv)
 
         try:
             _jws_alg = atr["id_token"].jws_header["alg"]
@@ -325,7 +342,9 @@ class UserInfo(SyncGetRequest):
         else:
             self.conv.entity.userinfo = response
             self.conv.events.store(EV_PROTOCOL_RESPONSE, response)
-            # return response
+
+        display_jwx_headers(response, self.conv)
+
 
     def _verify_subject_identifier(self, user_info):
         id_tokens = get_id_tokens(self.conv)
@@ -487,16 +506,20 @@ class RotateKeys(Operation):
 class RotateSigKeys(RotateKeys):
     def __init__(self, conv, inut, sh, **kwargs):
         RotateKeys.__init__(self, conv, inut, sh, **kwargs)
-        self.new_key = {"type": "RSA", "key": "./keys/second_sig.key",
-                        "use": ["sig"]}
+        self.new_key = {
+            "type": "RSA", "key": "./keys/second_sig.key",
+            "use": ["sig"]
+        }
         self.kid_template = "sig%d"
 
 
 class RotateEncKeys(RotateKeys):
     def __init__(self, conv, inut, sh, **kwargs):
         RotateKeys.__init__(self, conv, inut, sh, **kwargs)
-        self.new_key = {"type": "RSA", "key": "./keys/second_enc.key",
-                        "use": ["enc"]}
+        self.new_key = {
+            "type": "RSA", "key": "./keys/second_enc.key",
+            "use": ["enc"]
+        }
         self.kid_template = "enc%d"
 
 
