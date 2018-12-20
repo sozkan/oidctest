@@ -1,3 +1,10 @@
+12/20/2018
+- OP: This fixes OP-ClientAuth-Any-Dynamic for client authentication methods not supported by pyoidc e.g method 'none' for CI-OP
+  - Generate a KeyError and default to client_secret_basic
+- OP: Fix remote execution security vulnerability
+  - Shell escape "iss" and "tag" values (provided by configuration) before passing those values to os.system calls
+- OP: Supporting OP influencing choice of token endpoint authn method by using set_client_authn_method in the test description.
+
 11/21/2018
 - OP: add OP-3rd_party-init-login and OP-3rd_party-init-login-nohttps; closes #129
 - OP: fix error handling when c_hash is missing in Implicit/Hybrid flows; closes #124

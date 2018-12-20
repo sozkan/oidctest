@@ -29,6 +29,7 @@ notifications:
     - roland@catalogix.se
     - hans.zandbelt@zmartzone.eu
     - panva.ip@gmail.com
+    - serkan@sozkan.com
 
 before_install:
   - docker-compose -f docker/docker-compose.yml up -d
@@ -37,12 +38,12 @@ install:
   - cd $TRAVIS_BUILD_DIR/..
   - git clone https://github.com/openid-certification/oidc-provider-conformance-tests.git
   - cd oidc-provider-conformance-tests
-  - git checkout tags/v2.0.10
+  - git checkout tags/v2.0.11
   - npm install --production
   - cd $TRAVIS_BUILD_DIR/..
   - git clone https://github.com/openid-certification/openid-client-conformance-tests.git
   - cd openid-client-conformance-tests
-  - git checkout tags/v1.0.8
+  - git checkout tags/v1.0.9
   - npm install --production
 
 before_script:
