@@ -1,9 +1,18 @@
+01/18/2019
+- OP: Added checks to make sure that a mutually supported token endpoint auth method is used. #142
+- OP: Added a try-except to prevent abrupt failures when response code is unexpected. Issue #7.
+- OP: Don't require nonce for code+token; #14
+- Change copyright year to 2019
+- Fix pyoidc to version 0.14.0
+- Release OP 2.2.0 and RP 1.1.6  
+
 12/20/2018
 - OP: This fixes OP-ClientAuth-Any-Dynamic for client authentication methods not supported by pyoidc e.g method 'none' for CI-OP
   - Generate a KeyError and default to client_secret_basic
 - OP: Fix remote execution security vulnerability
   - Shell escape "iss" and "tag" values (provided by configuration) before passing those values to os.system calls
 - OP: Supporting OP influencing choice of token endpoint authn method by using set_client_authn_method in the test description.
+- Release OP 2.1.7
 
 11/21/2018
 - OP: add OP-3rd_party-init-login and OP-3rd_party-init-login-nohttps; closes #129
