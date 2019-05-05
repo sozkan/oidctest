@@ -825,7 +825,9 @@ class VerifyClaims(Error):
         else:
             logger.info('IdToken claims: {}'.format(claims))
             res = get_id_tokens(conv)
-            assert len(res)  # must be at least one
+            if len(res)<1:
+                return {}
+            
             _idt = res[0]
 
             mm = []
